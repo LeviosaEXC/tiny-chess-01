@@ -1,9 +1,9 @@
 import json,os,urllib.request as u
 V=(0,20,64,66,100,180,0)
-Y=[ord(c)-75 for c in"KKKKLMMGLJIKKKKOLLMPMMOQUUUUKKKKACEECGKLELMNEKNOELNOEKMNCGKKACEEGIIIILKKIMMMIKMMILLMIKLMIKKKGIIIOQMKOOKKIGGGGEECECCAECCAECCAECCA"]
+Y=[ord(c)-75 for c in"KKKKLMMGLJIKKKKOLLMPMMOQUUUUKKKKACEECGKLELMNEKNOELNOEKMNCGKKACEEGIIIILKKIMMMIKMMILLMIKLMIKKKGIIIOQMKOOKKIGGGGEECECCAECCAECCAECCAAEEEEEKKEIOQEIQSEIQSEIOQEGIKACEG"]
 N=(-21,-19,-12,-8,8,12,19,21);D=(-11,-9,9,11);R=(-10,-1,1,10);I=D+R;T=((N,2),(I,6));Q=((D,3),(R,4))
 C=[15]*120;C[25]=12;C[95]=3;C[28],C[21],C[98],C[91]=14,13,11,7
-M=2e4;L=5e4;O=[0];H={};J=[0]*64;U=os.getenv('MAKEFUN_ENV_URL')
+M=2e4;L=6e4;O=[0];H={};J=[0]*64;U=os.getenv('MAKEFUN_ENV_URL')
 X=Exception
 def Z():
  O[0]+=1
@@ -57,17 +57,19 @@ def g(b,s,c,e,k):
   if not A(nb,nb.index(6+6*s),1-s):o.append((f,t,pr,nb,c&C[f]&C[t],(f+t)//2*(q==0 and abs(t-f)==20)))
  return o
 def E(b,s):
- c=0;x=0;y=0
+ c=0;q=0;x=0;y=0
  for i,p in enumerate(b):
   if p%13==0:continue
   t=(p-1)%6+1
   if t>5:x,y=(i,y)if p<7 else(x,i);continue
+  q+=t==5
   r=i//10-2;f=i%10-1;h=min(f,7-f)
   v=V[t]+(Y[t*32-32+(r if p<7 else 7-r)*4+h]if t<4 else 0)
   c+=v if p<7 else-v
+ u=128-32*(q>0)
  for k,z in((x,1),(y,-1)):
   r=k//10-2;f=k%10-1;h=min(f,7-f)
-  c+=z*Y[96+(r if z>0 else 7-r)*4+h]
+  c+=z*Y[u+(r if z>0 else 7-r)*4+h]
  return c*(1-2*s)
 def o(m,b,tt,y,e):
  m.sort(key=lambda n:-(1e6 if n[:3]==tt else(10*V[(b[n[1]]-1)%6+1]-V[(b[n[0]]-1)%6+1]if b[n[1]]else 1000*(n[1]==e)+500*(n[:3]==J[y]))+9000*(n[2]>0)))
@@ -81,9 +83,8 @@ def S(b,s,c,e,d,a,w,y):
   o(m,b,tt,y,e);j=a;r=-M;n=None
  else:
   if d<-7:return E(b,s)
-  h=A(b,b.index(6+6*s),1-s);m=g(b,s,c,e,not h)
-  if h and not m:return-M+y
-  if not h and(a:=max(a,E(b,s)))>=w:return w
+  m=g(b,s,c,e,1)
+  if(a:=max(a,E(b,s)))>=w:return w
   o(m,b,None,y,e);r=a
  for f,t,pr,nb,nc,ne in m:
   v=-S(nb,1-s,nc,ne,d-1,-w,-a,y+1)
@@ -109,9 +110,10 @@ def p(x):
  e=(int(w[3][1])+1)*10+ord(w[3][0])-96 if w[3]!='-'else 0
  return b,s,c,e
 def k(b,s,c,e,l):
- O[0]=0;H.clear();m=g(b,s,c,e,0);z=None;o(m,b,None,0,e)
+ O[0]=0;H.clear();m=g(b,s,c,e,0);z=None
  for d in range(39):
   try:
+   o(m,b,z,0,e)
    r=a=-M;n=None
    for f,t,pr,nb,nc,ne in m:
     w=-S(nb,1-s,nc,ne,d,-M,-a,1)
